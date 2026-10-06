@@ -90,19 +90,22 @@ Invia tutti i campi seguenti in formato JSON. Il `codice` viene generato dal ser
 
 La risposta contiene `status: "SUCCESS"` e lo studente creato. Se manca un campo o un valore non è valido, restituisce HTTP 400.
 
-### 4. Modifica uno studente
+### 4. Sostituisce i dati di uno studente
 
-**PATCH** `/students/:cod`
+**PUT** `/students/:cod`
 
-Parametro `cod`: codice dello studente. Invia uno o più campi da modificare:
+Parametro `cod`: codice dello studente. Invia tutti i campi dello studente in formato JSON:
 
 ```json
 {
+    "nome": "Marco",
+    "cognome": "Bianchi",
+    "email": "marco.bianchi@example.it",
     "corso": "Economia"
 }
 ```
 
-La risposta contiene `status: "SUCCESS"` e lo studente aggiornato. I campi non inviati restano invariati.
+La risposta contiene `status: "SUCCESS"` e lo studente aggiornato. Se manca un campo o un valore non è valido, restituisce HTTP 400.
 
 ### 5. Elimina uno studente
 

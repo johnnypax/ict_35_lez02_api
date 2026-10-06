@@ -89,8 +89,8 @@ app.delete("/students/:cod", (req, res) => {
     }
 });
 
-// Modifica i campi di uno studente
-app.patch("/students/:cod", (req, res) => {
+// Sostituisce uno studente
+app.put("/students/:cod", (req, res) => {
     const studente = studenti.find(s => s.codice === req.params.cod);
 
     if (!studente) {
@@ -98,16 +98,19 @@ app.patch("/students/:cod", (req, res) => {
     }
 
     const body = req.body || {};
-    const campi = ["nome", "cognome", "email", "corso"];
-    const campiInviati = campi.filter(campo => body[campo] !== undefined);
+    const nome = body.nome;
+    const cognome = body.cognome;
+    const email = body.email;
+    const corso = body.corso;
 
-    if (campiInviati.length === 0 || campiInviati.some(campo => typeof body[campo] !== "string" || !body[campo].trim())) {
+    if ([nome, cognome, email, corso].some(valore => typeof valore !== "string" || !valore.trim())) {
         return res.status(400).json({ status: "ERROR", data: "Dati dello studente non validi" });
     }
 
-    campiInviati.forEach(campo => {
-        studente[campo] = body[campo];
-    });
+    studente.nome = nome;
+    studente.cognome = cognome;
+    studente.email = email;
+    studente.corso = corso;
     res.json({ status: "SUCCESS", data: studente });
 });
 
