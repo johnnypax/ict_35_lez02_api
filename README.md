@@ -1,6 +1,6 @@
 # Student Management API
 
-Questa API consente di gestire studenti, permettendo di crearli, recuperarli, aggiornarli e cancellarli. I dati sono conservati in un array in memoria.
+Questa API consente di gestire studenti, esami e iscrizioni. I dati sono conservati in array in memoria; router e controller sono organizzati in moduli separati.
 
 ## Tecnologie utilizzate
 
@@ -121,10 +121,90 @@ Risposta in caso di successo:
 }
 ```
 
+### 6. Recupera tutti gli esami
+
+**GET** `/exams`
+
+Restituisce l'elenco degli esami disponibili.
+
+### 7. Recupera un esame
+
+**GET** `/exams/:cod`
+
+Parametro `cod`: codice dell'esame, ad esempio `esam1`.
+
+### 8. Crea un esame
+
+**POST** `/exams`
+
+Invia tutti i campi in formato JSON; il codice viene generato dal server:
+
+```json
+{
+    "nome": "Basi di dati",
+    "data": "15/12/2026",
+    "corso": "Informatica",
+    "aula": "Aula 3"
+}
+```
+
+### 9. Sostituisce un esame
+
+**PUT** `/exams/:cod`
+
+Invia tutti i campi dell'esame (`nome`, `data`, `corso`, `aula`). I campi mancanti o non validi generano HTTP 400.
+
+### 10. Elimina un esame
+
+**DELETE** `/exams/:cod`
+
+Un esame con iscrizioni attive non può essere eliminato (HTTP 409). Elimina prima le iscrizioni associate.
+
+### 11. Recupera tutte le iscrizioni
+
+**GET** `/enrollments`
+
+Restituisce l'elenco delle iscrizioni.
+
+### 12. Recupera un'iscrizione
+
+**GET** `/enrollments/:cod`
+
+Parametro `cod`: codice dell'iscrizione, ad esempio `iscr1`.
+
+### 13. Crea un'iscrizione
+
+**POST** `/enrollments`
+
+Associa uno studente esistente a un esame esistente:
+
+```json
+{
+    "studenteCodice": "stud1",
+    "esameCodice": "esam1"
+}
+```
+
+La stessa persona non può essere iscritta due volte allo stesso esame (HTTP 409); codici di studente o esame non validi generano HTTP 400.
+
+### 14. Sostituisce un'iscrizione
+
+**PUT** `/enrollments/:cod`
+
+Invia entrambi i campi (`studenteCodice` e `esameCodice`) riferiti a record esistenti.
+
+### 15. Elimina un'iscrizione
+
+**DELETE** `/enrollments/:cod`
+
+Rimuove l'iscrizione identificata dal codice.
+
 ## Note
 
 - L'API parte con due studenti di esempio.
+- L'API parte con due esami di esempio; le iscrizioni iniziano vuote.
 - I dati sono conservati in memoria e non sono persistenti: al riavvio del server vengono ripristinati i dati iniziali.
+- La struttura usa `routes/` per gli endpoint, `controllers/` per la logica e `data/database.js` per gli array condivisi.
 
 ## Contribuire
 
