@@ -1,4 +1,4 @@
-name: Test di integrazione separati
+name: CI - Continuous Delivery
 
 on:
   push:
@@ -68,7 +68,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/node-api-cd-test:latest \
             .
 
       - name: Push Docker image
